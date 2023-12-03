@@ -44,13 +44,13 @@ Source Code:
 number a hai 10
 number b hai btao?
 boolean c hai sahi
-jabtak (a > 0 aur b < 10) {
+jabtak (a seChota 0 aur b seBara 10) {
     # Ek Tabsarah
     likho "Salam Duniya!"
-    agar (a == 5) {
+    agar (a keBrabar 5) {
         likho "a is 5"
     } 
-    warna agar (a == 6) {
+    warna agar (a keBrabar 6) {
         likho "a is 6"
     } 
     warna {
@@ -60,10 +60,10 @@ jabtak (a > 0 aur b < 10) {
 }
 
 Lexicalized AST:
-[["number", "a", "hai", "10"], ["number", "b", "hai", "btao?"], ["boolean", "c", "hai", "sahi"],["jabtak", ["a", ">", "0", "aur", "b", "<", "10"]], [["# Ek Tabsarah"], ["likho", "Salam Duniya!"], ["agar", ["a", "==", "5"]], [["likho", "a is 5"]], ["warnaagar", ["a", "==", "6"]], [["likho", "a is 6"]], ["warna"], [["likho", "a is not 5 or 6"]], ["a", "hai", "a", "-", "1"]]]
+[["number", "a", "hai", "10"], ["number", "b", "hai", "btao?"], ["boolean", "c", "hai", "sahi"],["jabtak", ["a", "seChota", "0", "aur", "b", "seBara", "10"]], [["# Ek Tabsarah"], ["likho", "Salam Duniya!"], ["agar", ["a", "keBrabar", "5"]], [["likho", "a is 5"]], ["warnaagar", ["a", "keBrabar", "6"]], [["likho", "a is 6"]], ["warna"], [["likho", "a is not 5 or 6"]], ["a", "hai", "a", "-", "1"]]]
 
 Tokenized AST:
-[["number", "a", KEYWORD, "10"], ["number", "b", KEYWORD, KEYWORD], ["boolean", "c", KEYWORD, BOOL_KW],[KEYWORD, CONDITIONAL_EXP], [COMMENT, [KEYWORD, "Salam Duniya!"], [KEYWORD, CONDITIONAL_EXP], [[KEYWORD, "a is 5"]], [KEYWORD, CONDITIONAL_EXP], [[KEYWORD, "a is 6"]], [KEYWORD], [[KEYWORD, "a is not 5 or 6"]], ["a", OPERATOR, "a", OPERATOR, "1"]]]
+[["number", "a", OPERATOR, "10"], ["number", "b", OPERATOR, KEYWORD], ["boolean", "c", OPERATOR, BOOL_KW],[KEYWORD, CONDITIONAL_EXP], [COMMENT, [KEYWORD, "Salam Duniya!"], [KEYWORD, CONDITIONAL_EXP], [[KEYWORD, "a is 5"]], [KEYWORD, CONDITIONAL_EXP], [[KEYWORD, "a is 6"]], [KEYWORD], [[KEYWORD, "a is not 5 or 6"]], ["a", OPERATOR, "a", OPERATOR, "1"]]]
 
 Parsed AST:
 [ASSIGNMENT_STATEMENT, INPUT_STATEMENT, ASSIGNMENT_STATEMENT, WHILE_STATEMENT, [COMMENT, PRINT_STATEMENT, IF_STATEMENT, [PRINT_STATEMENT], ELIF_STATEMENT, [PRINT_STATEMENT], ELSE_STATEMENT, [PRINT_STATEMENT], ASSIGNMENT_STATEMENT]]

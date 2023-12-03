@@ -4,15 +4,15 @@ LEXICALIZED AST:
     ["number", "a", "hai", "10"], 
     ["number", "b", "hai", "btao?"], 
     ["boolean", "c", "hai", "sahi"]
-    ["jabtak", ["a", ">", "0", "aur", "b", "<", "10"]], 
+    ["jabtak", ["a", "seChota", "0", "aur", "b", "seBara", "10"]], 
     [
         ["# Ek Tabsarah"],
         ["likho", "Salam Duniya!"], 
-        ["agar", ["a", "==", "5"]], 
+        ["agar", ["a", "keBrabar", "5"]], 
         [
             ["likho", "a is 5"]
         ], 
-        ["warnaagar", ["a", "==", "6"]], 
+        ["warnaagar", ["a", "keBrabar", "6"]], 
         [
             ["likho", "a is 6"]
         ], 
@@ -27,9 +27,9 @@ LEXICALIZED AST:
 TOKENIZED AST:
 
 [
-    ["number", "a", KEYWORD, "10"], 
-    ["number", "b", KEYWORD, KEYWORD], 
-    ["boolean", "c", KEYWORD, BOOL_KW]
+    ["number", "a", OPERATOR, "10"], 
+    ["number", "b", OPERATOR, KEYWORD], 
+    ["boolean", "c", OPERATOR, BOOL_KW]
     [KEYWORD, CONDITIONAL_EXP], 
     [
         COMMENT,
