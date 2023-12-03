@@ -1,0 +1,17 @@
+number a hai 10
+number b hai btao?
+boolean c hai sahi
+jabtak (a seChota 0 aur b seBara 10) {
+    # Ek Tabsarah
+    likho "Salam Duniya!"
+    agar (a keBrabar 5) {
+        likho "a is 5"
+    } 
+    warnaagar (a keBrabar 6) {
+        likho "a is 6"
+    } 
+    warna {
+        likho "a is not 5 or 6"
+    }
+    a hai a - 1
+}

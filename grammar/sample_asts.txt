@@ -1,9 +1,9 @@
 LEXICALIZED AST:
 
 [
-    ["number", "a", "=", "10"], 
-    ["number", "b", "=", "btao()"], 
-    ["boolean", "c", "=", "sahi"]
+    ["number", "a", "hai", "10"], 
+    ["number", "b", "hai", "btao?"], 
+    ["boolean", "c", "hai", "sahi"]
     ["jabtak", ["a", ">", "0", "aur", "b", "<", "10"]], 
     [
         ["# Ek Tabsarah"],
@@ -20,16 +20,16 @@ LEXICALIZED AST:
         [
             ["likho", "a is not 5 or 6"]
         ], 
-        ["a", "=", "a", "-", "1"]
+        ["a", "hai", "a", "-", "1"]
     ]
 ]
 
 TOKENIZED AST:
 
 [
-    ["number", "a", OPERATOR, "10"], 
-    ["number", "b", OPERATOR, "btao()"], 
-    ["boolean", "c", OPERATOR, BOOL_KW]
+    ["number", "a", KEYWORD, "10"], 
+    ["number", "b", KEYWORD, KEYWORD], 
+    ["boolean", "c", KEYWORD, BOOL_KW]
     [KEYWORD, CONDITIONAL_EXP], 
     [
         COMMENT,
