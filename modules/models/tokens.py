@@ -1,3 +1,4 @@
+
 class KEYWORD:
     name = ""
     equiv_repr = ""
@@ -16,14 +17,17 @@ class OPERATOR:
     operator = ""
     equiv_repr = ""
 
+    assignment_op={"hai": "="}
     arithematic_op = ["+", "-", "*", "/", "%"]
-    relational_op = ["==", "!=", "<", ">", "<=", ">="]
+    relational_op = {"keBrabar": "==", "keBrabarNahi": "!=", "seBara": "<", "seChota": ">", "jitnaYaChota": "<=", "jitnaYaBara":">="}
     logical_op = {"aur": "and", "ya": "or", "nahi": "not"}
 
     def __init__(self, operator: str) -> None:
         self.operator = operator
         if operator in self.logical_op.keys():
-            self.equiv_repr = self.logical_op[operator] 
+            self.equiv_repr = self.logical_op[operator]
+        elif operator in self.assignment_op.keys():
+            self.equiv_repr = self.assignment_op[operator]
         else:
             self.equiv_repr = operator
     
