@@ -73,7 +73,7 @@ class CONDITIONAL_EXP:
 
     def __init__(self, condition: list) -> None:
         self.condition = condition
-        #self.equiv_repr = " ".join(condition)
+        self.equiv_repr = " ".join(str(condition))
 
     def __repr__(self) -> str:
         return f"CONDITIONAL_EXP({self.condition})"
