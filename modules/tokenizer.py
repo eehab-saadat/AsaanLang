@@ -1,5 +1,5 @@
-from models import tokens
-from models import types
+from modules.models.tokens import OPERATOR, BOOL_KW, CONDITIONAL_EXP, COMMENT, KEYWORD
+from modules.models.types import NUMBER, ISHARIYA, LAFZ, BOOLEAN
 
 class Tokenizer:
     expr_list = ""
