@@ -1,3 +1,4 @@
+
 class KEYWORD:
     name = ""
     equiv_repr = ""
@@ -16,14 +17,19 @@ class OPERATOR:
     operator = ""
     equiv_repr = ""
 
+    assignment_op={"hai": "="}
     arithematic_op = ["+", "-", "*", "/", "%"]
-    relational_op = ["==", "!=", "<", ">", "<=", ">="]
+    relational_op = {"keBrabar": "==", "keBrabarNahi": "!=", "seBara": "<", "seChota": ">", "jitnaYaChota": ">=", "jitnaYaBara":"<="}
     logical_op = {"aur": "and", "ya": "or", "nahi": "not"}
 
     def __init__(self, operator: str) -> None:
         self.operator = operator
         if operator in self.logical_op.keys():
-            self.equiv_repr = self.logical_op[operator] 
+            self.equiv_repr = self.logical_op[operator]
+        elif operator in self.relational_op.keys():
+            self.equiv_repr = self.relational_op[operator]
+        elif operator in self.assignment_op.keys():
+            self.equiv_repr = self.assignment_op[operator]
         else:
             self.equiv_repr = operator
     
@@ -34,7 +40,7 @@ class OPERATOR:
         return f"{self.equiv_repr}"
     
     def isAssignment(self) -> bool:
-        return self.operator == "="
+        return self.operator == "hai"
     
     def isArithematic(self) -> bool:
         return self.operator in self.arithematic_op
@@ -64,7 +70,7 @@ class CONDITIONAL_EXP:
 
     def __init__(self, condition: list) -> None:
         self.condition = condition
-        self.equiv_repr = " ".join(condition)
+        #self.equiv_repr = " ".join(condition)
 
     def __repr__(self) -> str:
         return f"CONDITIONAL_EXP({self.condition})"
