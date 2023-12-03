@@ -1,70 +1,71 @@
-from models import tokens
-from models import types
+from models.tokens import OPERATOR, BOOL_KW, CONDITIONAL_EXP, COMMENT, KEYWORD
+from models.types import NUMBER, ISHARIYA, LAFZ, BOOLEAN
 
+# For Code Tokenization
 class Tokenizer:
     expr_list = ""
     symbol_table = []
     vars = []
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
     other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
-    var_types=["number", "lafz", "ishariya", "boolean"]
+    var_types= ["number", "lafz", "ishariya", "boolean"]
 
     def __init__(self, expr_list: str) -> None:
         self.expr_list = expr_list
 
     def tokenize(self) -> tuple:
-        return self.tokenizer(self.expr_list)
+        return self.tokenizeRecursively(self.expr_list)
 
-    def tokenizer(self, exprs):
+    def tokenizeRecursively(self, expression_list: list) -> tuple:
         # iterate through list
-        for i in range(len(exprs)):
+        for i in range(len(expression_list)):
             # if nested list found iterate through hat list
-            if type(exprs[i])==list:
-                self.tokenizer(exprs[i])
+            if type(expression_list[i])==list:
+                self.tokenizeRecursively(expression_list[i])
             else:
                 # check for arithmetic and assignment operator
-                if exprs[i] in tokens.OPERATOR.arithematic_op or exprs[i] in tokens.OPERATOR.assignment_op:
+                if expression_list[i] in OPERATOR.arithematic_op or expression_list[i] in OPERATOR.assignment_op:
 
-                    exprs[i] = tokens.OPERATOR(exprs[i])
+                    expression_list[i] = OPERATOR(expression_list[i])
                 # check for relational operators
-                elif exprs[i] in tokens.OPERATOR.relational_op:
+                elif expression_list[i] in OPERATOR.relational_op:
 
-                    exprs[i]=tokens.OPERATOR(exprs[i])
+                    expression_list[i]=OPERATOR(expression_list[i])
 
                 # check boolean keywords
-                elif exprs[i] in tokens.BOOL_KW.bool_val:
+                elif expression_list[i] in BOOL_KW.bool_val:
 
-                    exprs[i] = tokens.BOOL_KW(exprs[i])
+                    expression_list[i] = BOOL_KW(expression_list[i])
                 # check for conditional keywords
-                elif exprs[i] in self.conditional_keyword:
+                elif expression_list[i] in self.conditional_keyword:
 
-                    exprs[i] = tokens.KEYWORD(exprs[i],self.conditional_keyword[exprs[i]])
-                    self.tokenizer(exprs[i+1])
-                    exprs[i+1] = tokens.CONDITIONAL_EXP(exprs[i+1])
+                    expression_list[i] = KEYWORD(expression_list[i],self.conditional_keyword[expression_list[i]])
+                    self.tokenizeRecursively(expression_list[i+1])
+                    expression_list[i+1] = CONDITIONAL_EXP(expression_list[i+1])
                 # check for other keywords
-                elif exprs[i] in self.other_keywords:
+                elif expression_list[i] in self.other_keywords:
 
-                    exprs[i] = tokens.KEYWORD(exprs[i], self.other_keywords[exprs[i]])
+                    expression_list[i] = KEYWORD(expression_list[i], self.other_keywords[expression_list[i]])
                 # check for comments
-                elif type(exprs[i])==str:
-                    if("#" in exprs[i]):
-                        exprs[i] = tokens.COMMENT(exprs[i])
+                elif type(expression_list[i])==str:
+                    if("#" in expression_list[i]):
+                        expression_list[i] = COMMENT(expression_list[i])
                     # symbol table checking
-                    elif exprs[i].lower() in self.var_types:
+                    elif expression_list[i].lower() in self.var_types:
                         # in case of multiple declarations throw error
-                        if exprs[i+1] in self.vars:
+                        if expression_list[i+1] in self.vars:
                             raise Exception("Multiple declaration not allowed")
                         # maintaining list of declaared variables
-                        self.vars += exprs[i+1]
+                        self.vars += expression_list[i+1]
                         # checking variable type
-                        if exprs[i].lower() == "number":
-                            self.symbol_table.append(types.NUMBER(exprs[i+1]))
-                        elif exprs[i].lower() == "ishariya":
-                            self.symbol_table.append(types.ISHARIYA(exprs[i+1]))
-                        elif exprs[i].lower() == "lafz":
-                            self.symbol_table.append(types.LAFZ(exprs[i+1]))
-                        elif exprs[i].lower() == "boolean":
-                            self.symbol_table.append(types.BOOLEAN(exprs[i+1]))
+                        if expression_list[i].lower() == "number":
+                            self.symbol_table.append(NUMBER(expression_list[i+1]))
+                        elif expression_list[i].lower() == "ishariya":
+                            self.symbol_table.append(ISHARIYA(expression_list[i+1]))
+                        elif expression_list[i].lower() == "lafz":
+                            self.symbol_table.append(LAFZ(expression_list[i+1]))
+                        elif expression_list[i].lower() == "boolean":
+                            self.symbol_table.append(BOOLEAN(expression_list[i+1]))
         result = (self.expr_list, self.symbol_table)
         return result
 
