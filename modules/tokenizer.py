@@ -15,57 +15,58 @@ class Tokenizer:
 
     def tokenize(self) -> tuple:
         return self.tokenizeRecursively(self.expr_list)
+        return self.tokenizeRecursively(self.expr_list)
 
-    def tokenizeRecursively(self, expressions: list) -> tuple:
+    def tokenizeRecursively(self, expression_list: list) -> tuple:
         # iterate through list
-        for i in range(len(expressions)):
+        for i in range(len(expression_list)):
             # if nested list found iterate through hat list
-            if type(expressions[i])==list:
-                self.tokenizeRecursively(expressions[i])
+            if type(expression_list[i])==list:
+                self.tokenizeRecursively(expression_list[i])
             else:
                 # check for arithmetic and assignment operator
-                if expressions[i] in OPERATOR.arithematic_op or expressions[i] in OPERATOR.assignment_op:
+                if expression_list[i] in OPERATOR.arithematic_op or expression_list[i] in OPERATOR.assignment_op:
 
-                    expressions[i] = OPERATOR(expressions[i])
+                    expression_list[i] = OPERATOR(expression_list[i])
                 # check for relational operators
-                elif expressions[i] in OPERATOR.relational_op:
+                elif expression_list[i] in OPERATOR.relational_op:
 
-                    expressions[i]=OPERATOR(expressions[i])
+                    expression_list[i]=OPERATOR(expression_list[i])
 
                 # check boolean keywords
-                elif expressions[i] in BOOL_KW.bool_val:
+                elif expression_list[i] in BOOL_KW.bool_val:
 
-                    expressions[i] = BOOL_KW(expressions[i])
+                    expression_list[i] = BOOL_KW(expression_list[i])
                 # check for conditional keywords
-                elif expressions[i] in self.conditional_keyword:
+                elif expression_list[i] in self.conditional_keyword:
 
-                    expressions[i] = KEYWORD(expressions[i],self.conditional_keyword[expressions[i]])
-                    self.tokenizeRecursively(expressions[i+1])
-                    expressions[i+1] = CONDITIONAL_EXP(expressions[i+1])
+                    expression_list[i] = KEYWORD(expression_list[i],self.conditional_keyword[expression_list[i]])
+                    self.tokenizeRecursively(expression_list[i+1])
+                    expression_list[i+1] = CONDITIONAL_EXP(expression_list[i+1])
                 # check for other keywords
-                elif expressions[i] in self.other_keywords:
+                elif expression_list[i] in self.other_keywords:
 
-                    expressions[i] = KEYWORD(expressions[i], self.other_keywords[expressions[i]])
+                    expression_list[i] = KEYWORD(expression_list[i], self.other_keywords[expression_list[i]])
                 # check for comments
-                elif type(expressions[i])==str:
-                    if("#" in expressions[i]):
-                        expressions[i] = COMMENT(expressions[i])
+                elif type(expression_list[i])==str:
+                    if("#" in expression_list[i]):
+                        expression_list[i] = COMMENT(expression_list[i])
                     # symbol table checking
-                    elif expressions[i].lower() in self.var_types:
+                    elif expression_list[i].lower() in self.var_types:
                         # in case of multiple declarations throw error
-                        if expressions[i+1] in self.vars:
+                        if expression_list[i+1] in self.vars:
                             raise Exception("Multiple declaration not allowed")
                         # maintaining list of declaared variables
-                        self.vars += expressions[i+1]
+                        self.vars += expression_list[i+1]
                         # checking variable type
-                        if expressions[i].lower() == "number":
-                            self.symbol_table.append(NUMBER(expressions[i+1]))
-                        elif expressions[i].lower() == "ishariya":
-                            self.symbol_table.append(ISHARIYA(expressions[i+1]))
-                        elif expressions[i].lower() == "lafz":
-                            self.symbol_table.append(LAFZ(expressions[i+1]))
-                        elif expressions[i].lower() == "boolean":
-                            self.symbol_table.append(BOOLEAN(expressions[i+1]))
+                        if expression_list[i].lower() == "number":
+                            self.symbol_table.append(NUMBER(expression_list[i+1]))
+                        elif expression_list[i].lower() == "ishariya":
+                            self.symbol_table.append(ISHARIYA(expression_list[i+1]))
+                        elif expression_list[i].lower() == "lafz":
+                            self.symbol_table.append(LAFZ(expression_list[i+1]))
+                        elif expression_list[i].lower() == "boolean":
+                            self.symbol_table.append(BOOLEAN(expression_list[i+1]))
         result = (self.expr_list, self.symbol_table)
         return result
 
