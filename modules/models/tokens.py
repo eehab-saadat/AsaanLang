@@ -17,6 +17,15 @@ class KEYWORD:
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    def isConditional(self) -> bool:
+        return self.name in self.conditional_keyword.keys()
+    
+    def isOther(self) -> bool:
+        return self.name in self.other_keywords.keys()
+    
+    def isVarType(self) -> bool:
+        return self.name in self.var_types
     
 class OPERATOR:
     operator = ""
