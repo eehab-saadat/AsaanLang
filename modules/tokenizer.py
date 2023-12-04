@@ -4,7 +4,7 @@ from modules.models.types import NUMBER, ISHARIYA, LAFZ, BOOLEAN
 # For Code Tokenizaion
 class Tokenizer:
     expr_list = ""
-    symbol_table = []
+    symbol_table = {}
     vars = []
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
     other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
@@ -56,17 +56,20 @@ class Tokenizer:
                         # in case of multiple declarations throw error
                         if expression_list[i+1] in self.vars:
                             raise Exception("Multiple declaration not allowed")
+                         # keyword as variable names check
+                        if expression_list[i+1] in self.conditional_keyword or expression_list[i+1] in self.other_keywords:
+                            raise Exception("Keywords cannot be variable names")
                         # maintaining list of declaared variables
                         self.vars += expression_list[i+1]
                         # checking variable type
                         if expression_list[i].lower() == "number":
-                            self.symbol_table.append(NUMBER(expression_list[i+1]))
+                            self.symbol_table.__setitem__(expression_list[i+1],NUMBER(expression_list[i+1]))
                         elif expression_list[i].lower() == "ishariya":
-                            self.symbol_table.append(ISHARIYA(expression_list[i+1]))
+                            self.symbol_table.__setitem__(expression_list[i+1],ISHARIYA(expression_list[i+1]))
                         elif expression_list[i].lower() == "lafz":
-                            self.symbol_table.append(LAFZ(expression_list[i+1]))
+                            self.symbol_table.__setitem__(expression_list[i+1],LAFZ(expression_list[i+1]))
                         elif expression_list[i].lower() == "boolean":
-                            self.symbol_table.append(BOOLEAN(expression_list[i+1]))
+                            self.symbol_table.__setitem__(expression_list[i+1],BOOLEAN(expression_list[i+1]))
         result = (self.expr_list, self.symbol_table)
         return result
 
