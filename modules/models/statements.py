@@ -1,5 +1,5 @@
 # import all types (NUMBER | ISHARIYA | LAFZ | BOOLEAN)
-from models.types import *
+from types import *
 
 class ASSIGNMENT_STATEMENT:
     variable_name = ""
@@ -98,3 +98,10 @@ class WHILE_STATEMENT:
     
     def __repr__(self) -> str:
         return f"WHILE_STATEMENT({self.condition})"
+    
+a = ASSIGNMENT_STATEMENT("a","10")
+b = ASSIGNMENT_STATEMENT("b","7")
+AST = [a,b]
+for item in AST:
+    b = str(item)
+    print(b)
