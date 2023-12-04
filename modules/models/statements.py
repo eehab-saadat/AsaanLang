@@ -1,3 +1,6 @@
+# import all types (NUMBER | ISHARIYA | LAFZ | BOOLEAN)
+from models.types import *
+
 class ASSIGNMENT_STATEMENT:
     variable_name = ""
     value = ""
@@ -18,9 +21,9 @@ class INPUT_STATEMENT:
     variable_name = ""
     equiv_repr = ""
 
-    def __init__(self, variable_name: str) -> None:
+    def __init__(self, variable_name: str, variable_type:str) -> None:
         self.variable_name = variable_name
-        self.equiv_repr = f"{variable_name} = input()"
+        self.equiv_repr = f"{variable_name} = {variable_type}(input(\"Enter {variable_name}({variable_type}): \"))"
 
     def __str__(self) -> str:
         return f"{self.equiv_repr}"

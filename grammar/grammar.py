@@ -7,7 +7,7 @@
 # <block_statement> ::= <statement> | <statement> <block_statement>
 # <statement> ::= <assignment_statement> | <print_statement> | <if_statement> | <while_statement>
 # <assignment_statement> ::= <variable_name> = <expression> | <variable_name> = <string_expression> | <variable_name> = <condition_expression>
-# <input_statement> ::= <type> <variable_name> = btao() | <variable_name> = btao()
+# <input_statement> ::= <type> <variable_name> = btao? | <variable_name> hai btao?
 # <print_statement> ::= likho <string_expression> | likho <variable_name>
 # <if_statement> ::= agar (<condition_expression>) { <block_statement> } | agar (<condition_expression>) { <block_statement> } <elif_statement><else_statement> | agar (<condition_expression>) { <block_statement> } <else_statement>
 # <elif_statement> ::= warnaagar (<condition_expression>) { <block_statement> }

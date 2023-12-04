@@ -3,6 +3,11 @@ class KEYWORD:
     name = ""
     equiv_repr = ""
 
+    # lists of allowed keywords
+    conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
+    other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
+    var_types=["number", "lafz", "ishariya", "boolean"]
+
     def __init__(self, keyword: str, equiv_repr: str) -> None:
         self.name = keyword
         self.equiv_repr = equiv_repr
@@ -17,6 +22,7 @@ class OPERATOR:
     operator = ""
     equiv_repr = ""
 
+    # lists of allowed operators
     assignment_op={"hai": "="}
     arithematic_op = ["+", "-", "*", "/", "%"]
     relational_op = {"keBrabar": "==", "keBrabarNahi": "!=", "seBara": "<", "seChota": ">", "jitnaYaChota": ">=", "jitnaYaBara":"<="}
