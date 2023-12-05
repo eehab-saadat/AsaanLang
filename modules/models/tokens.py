@@ -27,6 +27,18 @@ class KEYWORD:
     def isVarType(self) -> bool:
         return self.name in self.var_types
     
+    def isJabTak(self):
+        return self.name == "jabtak"
+    
+    def isAgar(self):
+        return self.name == "agar"
+    
+    def isWarnaAgar(self):
+        return self.name == "warnaagar"
+    
+    def isWarna(self):
+        return self.name == "warna"
+    
 class OPERATOR:
     operator = ""
     equiv_repr = ""
