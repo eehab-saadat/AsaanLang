@@ -17,15 +17,19 @@
 #     a hai a - 1
 # }
 
+# [ STatement ]
+# AST = [ [statement] ]
+
 '''Tokenized_list :
 [
     ["number", "a", OPERATOR, "10"], 
     ["number", "b", OPERATOR, KEYWORD], 
     ["boolean", "c", OPERATOR, BOOL_KW],
-    [KEYWORD, CONDITIONAL_EXP], 
-    [
-        COMMENT,
+    [KEYWORD, CONDITIONAL_EXP,  [
         [KEYWORD, "Salam Duniya!"],
+    ]],
+   
+        
         [KEYWORD, CONDITIONAL_EXP], 
         [
             [KEYWORD, "a is 5"]
@@ -48,8 +52,11 @@
     INPUT_STATEMENT, 
     ASSIGNMENT_STATEMENT,
     WHILE_STATEMENT, 
-    [
-        COMMENT,
+    COMMENT,
+
+
+
+
         PRINT_STATEMENT, 
         IF_STATEMENT, 
         [
@@ -168,17 +175,64 @@ class Parser:
                 resultant += exp[i] + " "
             elif isinstance(exp[i], OPERATOR):
                 resultant += exp[i].equiv_repr + " "
+            # for boolean
+            elif var_type == "boolean" and isinstance(exp[i], BOOL_KW):
+                resultant += exp[i].equiv_repr + " "
             else : # is a constant term
                 if var_type == "lafz": # for str type
                     resultant += f"\"{exp[i]}\" "
                 else: # for int or float tye
                     resultant += exp[i] + " "
 
+        return resultant
+    
+    def convertTOCondition(self, condition: list) -> str :
+        resultant = ""
+        for i in range(len(condition)):
+            if self.isVariable(condition[i]) :
+                resultant += condition[i] + " "
+            elif isinstance(condition[i], OPERATOR) or isinstance(condition[i], BOOL_KW):
+                resultant += condition[i].equiv_repr + " "
+            # for boolean
+            elif isinstance(condition[i], BOOL_KW):
+                resultant += condition[i].equiv_repr + " "
+            elif isinstance(condition[i], str) and condition[i].isnumeric() or self.isFloat(condition[i]):
+                resultant += condition[i] + " "
+            else : # is assume is a string
+                resultant += f"\"{condition[i]}\" "
 
         return resultant
-
+    
     # TO BE IMPLEMENTED
-    def isAllowedConditional() -> bool:
+    def isAllowedConditional(self, condition: list) -> bool:
+        # there is no condition
+        if len(condition) == 0:
+            return False
+        # check if condition is valid
+        for i in range(len(condition)):
+            if isinstance(condition[i], BOOL_KW):
+                if i+1 >= len(condition) -1 :
+                # must not be succeeded by a str or another bool
+                    return False
+                if isinstance(condition[i+1], str) or isinstance(condition[i+1], BOOL_KW):
+                    return False
+            if isinstance(condition[i], str) and i+1 >= len(condition) or isinstance(condition[i+1], str) or isinstance(condition[i+1], BOOL_KW):
+               return False
+            if isinstance(condition[i], OPERATOR):
+
+                if condition[i].isAssignment(): # assignment mid condition is not allowed in conditional
+                    return False
+
+                if condition[i].islogical() and condition[i].operator == "nahi" :
+                    # must be followed by a string or bool_kw
+                    if i+1 >= len(condition) or isinstance(condition[i+1], OPERATOR):
+                        return False
+
+                if condition[i].isArithematic() or condition[i].isRelational() or condition[i].isLogical() and condition[i].operator != "nahi" :
+                    # must be preceeded and succeeded by a str
+                    if i+1 >= len(condition) or i-1 < 0 or not isinstance(condition[i-1], str) or not isinstance(condition[i+1], str):
+                        return False
+
         return True
 
     def parseRecursive(self, tokens:list, AST: list) -> list:
@@ -186,24 +240,20 @@ class Parser:
         # Traverse till the end of tokenized list
         for i in range(len(tokens)):
             # if ith element of list is another list then recursive call
+            # if AST[-1] == while | if | elif :
+            #   AST.append(tempAST)
             if isinstance(tokens[i], list):
-                self.current_line+=1
+                self.current_line += 1
                 tempAST:list = []
-                self.parseRecursive(tokens[i], tempAST)
+                tempAST = self.parseRecursive(tokens[i], tempAST)
                 if len(tempAST) == 1:
                     AST += tempAST
                 else :
                     AST.append(tempAST)
+
             else:
-                # handle all cases here
 
-                # Note: multiple declarations and invalid variable names are already handled in the tokenizer
-                # case 1: declaration statement
-                # 1.1: type name
-                # 1.2: type name hai value
-                # 1.3: type name hai btao?
-
-                # expect a declarative assignment statement
+                # for assignment or input statement statements
                 if isinstance(tokens[i], str): # could be a variable name or type declaration
                     #if is a type declaration
                     if tokens[i] in KEYWORD.var_types: 
@@ -252,20 +302,76 @@ class Parser:
                         break
                     else:
                         pass # raise error invalid assignment
+  
+                # 1--- code for conditional
+                # 2 --- errors
+                
+                # for comments
+                elif isinstance(tokens[i], COMMENT):
+                   AST.append(tokens[i]) # append as it is
 
-                # case 3 :for expression -> check if expression if valid or not
-                # 3.1 is str
-                # 3.2 i an operator
+                # could be conditonal(if,elif,else), print or while loop
+                elif isinstance(tokens[i], KEYWORD):
 
-                # case 2: keyword statement
-                # 2.2: while statement:
-                # must be followed by a conditional
-                # must be followed by a block-statement
-                # call recursion with and empty list passed, append that list to the self.AST
-                # 2.3: conditional statement:
-                # 2.3.1: if statement:
-                # must be followed be a conditional 
-                #
+                    # for print statement
+                    if tokens[i].name == "likho":
+                        i+=1
+                        #must be followed by a string or a single variable
+                        if i == len(tokens) - 1:
+                            statement_to_print = ""
+                            # if variable
+                            if self.isVariable(tokens[i]) :
+                                statement_to_print = tokens[i]
+                            # if string then wrap in quotation
+                            elif isinstance(tokens[i], str):
+                                statement_to_print = f"\"{tokens[i]}\""
+                            else:
+                                pass # raise error: token cannot be printed
+                            AST.append(PRINT_STATEMENT(statement_to_print))
+                            break
+                        else :
+                            pass # raise error: invalif print statement
+
+                    # for while / if / elif statement or else -> check is followed by conditional
+                    elif tokens[i].isConditional() or tokens[i].isWarna() :
+                        # if is an elif | else statement (warnaagar) then -> must be preceeded by an if or elif statement
+                        
+                        keyword : KEYWORD = tokens[i]
+                        condition : str = ""
+                        # taking into account the condition for while | if | elif :
+                        if keyword.isConditional():
+                            i+=1
+                            # if is a valid condition
+                            if i != len(tokens) - 1 or not isinstance(tokens[i], CONDITIONAL_EXP) or not self.isAllowedConditional(tokens[i].condition):
+                                pass # raise error: invalid conditional expression
+                            condition : str = self.convertTOCondition(tokens[i].condition) # get the condition
+                       
+                        #append the statement to AST
+                        if keyword.isJabTak():
+                            AST.append(WHILE_STATEMENT(condition))
+                        elif keyword.isAgar():
+                            AST.append(IF_STATEMENT(condition))
+                        elif keyword.isWarnaAgar():
+                            AST.append(ELIF_STATEMENT(condition))
+                        else:
+                            AST.append(ELSE_STATEMENT())
+                        break 
+
+                    else :
+                        pass # raise error: invalid keyword usage
+
+                else:
+                    pass # raise error: unidentified or invalid token
+        
+            
+        # check that all while, if, elif , else statements are followed by a code block (list) in the ast
+        for i in range(len(AST)):
+            
+            if isinstance(AST[i], list) :
+                # must be preceeded by a while or if or elif statement
+                if i-1 < 0 or not isinstance(AST[i-1], WHILE_STATEMENT) or not isinstance(AST[i-1], IF_STATEMENT) or not isinstance(AST[i-1], ELIF_STATEMENT):
+                    pass # raise error: code block expected at 
+
 
         return AST
     
@@ -275,7 +381,25 @@ class Parser:
 tempTable = {"a": NUMBER("a"), "b": NUMBER("b"), "c": LAFZ("c"),}
 
 temptokens = [
-    ["lafz", "c", OPERATOR("hai"), "hello", OPERATOR("+"), " world"],
+        [KEYWORD("jabtak", "while"), CONDITIONAL_EXP(['a', OPERATOR('seChota'), '0', OPERATOR('aur'), 'b', OPERATOR('seBara'), '10'])], 
+        [
+            COMMENT("# Ek Tabsarah"),
+            [KEYWORD("likho", 'print'), "Salam Duniya!"],
+            [KEYWORD('agar', 'if'), CONDITIONAL_EXP(['a', OPERATOR('keBrabar'), '5'])], 
+            [
+                [KEYWORD('likho', 'print'), "a is 5"]
+            ], 
+            [KEYWORD('warnaagar', 'elif'), CONDITIONAL_EXP(['sahi'])], 
+            [
+                [KEYWORD('likho', 'print'), "a is 6"]
+            ], 
+            [KEYWORD('warna', 'else')], 
+            [
+                [KEYWORD('likho', 'print'), "a is not 5 or 6"]
+            ], 
+            ["a", OPERATOR('hai'), "a", OPERATOR('-'), "1"]
+
+        ]
 ]
 
 par = Parser(temptokens, tempTable).parse()
