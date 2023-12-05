@@ -1,80 +1,4 @@
-# CODE :
-# number a hai 10
-# number b hai btao?
-# boolean c hai sahi
-# jabtak (a seChota 0 aur b seBara 10) {
-#     # Ek Tabsarah
-#     likho "Salam Duniya!"
-#     agar (a keBrabar 5) {
-#         likho "a is 5"
-#     } 
-#     warnaagar (a keBrabar 6) {
-#         likho "a is 6"
-#     } 
-#     warna {
-#         likho "a is not 5 or 6"
-#     }
-#     a hai a - 1
-# }
-
-# [ STatement ]
-# AST = [ [statement] ]
-
-'''Tokenized_list :
-[
-    ["number", "a", OPERATOR, "10"], 
-    ["number", "b", OPERATOR, KEYWORD], 
-    ["boolean", "c", OPERATOR, BOOL_KW],
-    [KEYWORD, CONDITIONAL_EXP,  [
-        [KEYWORD, "Salam Duniya!"],
-    ]],
-   
-        
-        [KEYWORD, CONDITIONAL_EXP], 
-        [
-            [KEYWORD, "a is 5"]
-        ], 
-        [KEYWORD, CONDITIONAL_EXP], 
-        [
-            [KEYWORD, "a is 6"]
-        ], 
-        [KEYWORD], 
-        [
-            [KEYWORD, "a is not 5 or 6"]
-        ], 
-        ["a", OPERATOR, "a", OPERATOR, "1"]
-    ]
-]
-'''
-'''PARSED AST: -> list to be returned by the parser
-[
-    ASSIGNMENT_STATEMENT, 
-    INPUT_STATEMENT, 
-    ASSIGNMENT_STATEMENT,
-    WHILE_STATEMENT, 
-    COMMENT,
-
-
-
-
-        PRINT_STATEMENT, 
-        IF_STATEMENT, 
-        [
-            PRINT_STATEMENT
-        ], 
-        ELIF_STATEMENT, 
-        [
-            PRINT_STATEMENT
-        ], 
-        ELSE_STATEMENT, 
-        [
-            PRINT_STATEMENT
-        ], 
-        ASSIGNMENT_STATEMENT
-    ]
-]
-'''
-
+#imports
 from models.tokens import *
 from models.statements import *
 from models.errors import *
@@ -126,8 +50,7 @@ class Parser:
             return True
         return False
     
-    def isFloat(self, value:str):
-        float_value = float(value)
+    def isFloat(self, value:str) :
         # Check if the string is numeric and contains a dot with no other characters
         return '.' in value and value.count('.') == 1 and value.replace('.', '').isdigit()
       
@@ -372,7 +295,6 @@ class Parser:
                 if i-1 < 0 or not isinstance(AST[i-1], WHILE_STATEMENT) or not isinstance(AST[i-1], IF_STATEMENT) or not isinstance(AST[i-1], ELIF_STATEMENT):
                     pass # raise error: code block expected at 
 
-
         return AST
     
 '''
@@ -401,6 +323,3 @@ temptokens = [
 
         ]
 ]
-
-par = Parser(temptokens, tempTable).parse()
-print(par[0:])
