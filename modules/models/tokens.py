@@ -2,6 +2,9 @@
 class KEYWORD:
     name = ""
     equiv_repr = ""
+    conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
+    other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
+    var_types=["number", "lafz", "ishariya", "boolean"]
 
     # lists of allowed keywords
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
@@ -97,7 +100,7 @@ class CONDITIONAL_EXP:
 
     def __init__(self, condition: list) -> None:
         self.condition = condition
-        #self.equiv_repr = " ".join(condition)
+        self.equiv_repr = " ".join(str(condition))
 
     def __repr__(self) -> str:
         return f"CONDITIONAL_EXP({self.condition})"
