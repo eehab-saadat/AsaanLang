@@ -9,7 +9,7 @@ class Tokenizer:
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
     other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
     var_types = ["number", "lafz", "ishariya", "boolean"]
-
+ 
     def __init__(self, expr_list: str) -> None:
         self.expr_list = expr_list
 
