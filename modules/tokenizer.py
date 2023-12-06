@@ -15,7 +15,6 @@ class Tokenizer:
 
     def tokenize(self) -> tuple:
         return self.tokenizeRecursively(self.expr_list)
-        return self.tokenizeRecursively(self.expr_list)
 
     def tokenizeRecursively(self, expression_list: list) -> tuple:
         # iterate through list
@@ -25,7 +24,7 @@ class Tokenizer:
                 self.tokenizeRecursively(expression_list[i])
             else:
                 # check for arithmetic and assignment operator
-                if expression_list[i] in OPERATOR.arithematic_op or expression_list[i] in OPERATOR.assignment_op:
+                if expression_list[i] in OPERATOR.arithematic_op or expression_list[i] in OPERATOR.assignment_op or expression_list[i] in OPERATOR.logical_op :
 
                     expression_list[i] = OPERATOR(expression_list[i])
                 # check for relational operators
