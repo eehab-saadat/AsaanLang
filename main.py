@@ -5,7 +5,7 @@ from modules.generator import CodeGenerator
 from modules.runner import Runner
 from modules.models.errors import ERROR
 
-with open("samples/sample.alif", "r") as file:
+with open("samples\sample.alif", "r") as file:
     source_code = file.read()
 
 # expr_list = Lexer(source_code).lexicalize()
