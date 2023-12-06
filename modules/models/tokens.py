@@ -2,9 +2,6 @@
 class KEYWORD:
     name = ""
     equiv_repr = ""
-    conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
-    other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
-    var_types=["number", "lafz", "ishariya", "boolean"]
 
     # lists of allowed keywords
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}

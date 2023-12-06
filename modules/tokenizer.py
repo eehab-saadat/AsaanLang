@@ -28,8 +28,8 @@ class Tokenizer:
                 if expression_list[i] in OPERATOR.arithematic_op or expression_list[i] in OPERATOR.assignment_op:
 
                     expression_list[i] = OPERATOR(expression_list[i])
-                # check for relational operators
-                elif expression_list[i] in OPERATOR.relational_op:
+                # check for relational operators and logical
+                elif expression_list[i] in OPERATOR.relational_op or expression_list[i] in OPERATOR.logical_op:
 
                     expression_list[i]=OPERATOR(expression_list[i])
 
