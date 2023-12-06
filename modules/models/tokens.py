@@ -2,6 +2,8 @@
 class KEYWORD:
     name = ""
     equiv_repr = ""
+
+    # lists of allowed keywords
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
     other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
     var_types=["number", "lafz", "ishariya", "boolean"]
@@ -15,11 +17,33 @@ class KEYWORD:
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    def isConditional(self) -> bool:
+        return self.name in self.conditional_keyword.keys()
+    
+    def isOther(self) -> bool:
+        return self.name in self.other_keywords.keys()
+    
+    def isVarType(self) -> bool:
+        return self.name in self.var_types
+    
+    def isJabTak(self):
+        return self.name == "jabtak"
+    
+    def isAgar(self):
+        return self.name == "agar"
+    
+    def isWarnaAgar(self):
+        return self.name == "warnaagar"
+    
+    def isWarna(self):
+        return self.name == "warna"
     
 class OPERATOR:
     operator = ""
     equiv_repr = ""
 
+    # lists of allowed operators
     assignment_op={"hai": "="}
     arithematic_op = ["+", "-", "*", "/", "%"]
     relational_op = {"keBrabar": "==", "keBrabarNahi": "!=", "seBara": "<", "seChota": ">", "jitnaYaChota": ">=", "jitnaYaBara":"<="}
@@ -55,7 +79,7 @@ class OPERATOR:
         return self.operator in self.logical_op.keys()
 
 class BOOL_KW:
-    bool_val = {"sahi": "true", "galat": "false"}
+    bool_val = {"sahi": "True", "galat": "False"}
     equiv_repr = ""
 
     def __init__(self, value: str) -> None:

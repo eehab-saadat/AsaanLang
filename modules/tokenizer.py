@@ -9,7 +9,7 @@ class Tokenizer:
     conditional_keyword = {"agar": "if", "jabtak": "while", "warnaagar": "elif"}
     other_keywords = {"likho": "print", "warna": "else", "btao?": "input"}
     var_types = ["number", "lafz", "ishariya", "boolean"]
-
+ 
     def __init__(self, expr_list: str) -> None:
         self.expr_list = expr_list
 
@@ -28,8 +28,8 @@ class Tokenizer:
                 if expression_list[i] in OPERATOR.arithematic_op or expression_list[i] in OPERATOR.assignment_op:
 
                     expression_list[i] = OPERATOR(expression_list[i])
-                # check for relational operators
-                elif expression_list[i] in OPERATOR.relational_op:
+                # check for relational operators and logical
+                elif expression_list[i] in OPERATOR.relational_op or expression_list[i] in OPERATOR.logical_op:
 
                     expression_list[i]=OPERATOR(expression_list[i])
 
@@ -72,7 +72,6 @@ class Tokenizer:
                             self.symbol_table.__setitem__(expression_list[i+1],BOOLEAN(expression_list[i+1]))
         result = (self.expr_list, self.symbol_table)
         return result
-
 
 
 

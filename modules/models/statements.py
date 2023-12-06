@@ -1,3 +1,6 @@
+# import all types (NUMBER | ISHARIYA | LAFZ | BOOLEAN)
+from types import *
+
 class ASSIGNMENT_STATEMENT:
     variable_name = ""
     value = ""
@@ -18,9 +21,10 @@ class INPUT_STATEMENT:
     variable_name = ""
     equiv_repr = ""
 
-    def __init__(self, variable_name: str) -> None:
+    def __init__(self, variable_name: str, variable_type:str) -> None:
         self.variable_name = variable_name
-        self.equiv_repr = f"{variable_name} = input()"
+        equiv_types = {"int":"number", "float":"ishariya", "str":"lafz", "bool":"boolean"}
+        self.equiv_repr = f"{variable_name} = {variable_type}(input(\"{variable_name} ({equiv_types[variable_type]}) darj karein: \"))"
 
     def __str__(self) -> str:
         return f"{self.equiv_repr}"
