@@ -1,6 +1,5 @@
 # Imports
 from typing import TextIO # type hinting for file object
-from models.statements import *
 
 # CodeGenerator class
 class CodeGenerator:
