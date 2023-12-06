@@ -1,5 +1,6 @@
 from modules.models.tokens import OPERATOR, BOOL_KW, CONDITIONAL_EXP, COMMENT, KEYWORD
 from modules.models.types import NUMBER, ISHARIYA, LAFZ, BOOLEAN
+from modules.models.errors import ERROR
 
 # For Code Tokenizaion
 class Tokenizer:
@@ -14,7 +15,6 @@ class Tokenizer:
         self.expr_list = expr_list
 
     def tokenize(self) -> tuple:
-        return self.tokenizeRecursively(self.expr_list)
         return self.tokenizeRecursively(self.expr_list)
 
     def tokenizeRecursively(self, expression_list: list) -> tuple:
@@ -55,10 +55,10 @@ class Tokenizer:
                     elif expression_list[i].lower() in self.var_types:
                         # in case of multiple declarations throw error
                         if expression_list[i+1] in self.vars:
-                            raise Exception("Multiple declaration not allowed")
+                            raise ERROR("error", "eek hi naam ke variable ko do martaba nahi banaya ja sakta")
                          # keyword as variable names check
                         if expression_list[i+1] in self.conditional_keyword or expression_list[i+1] in self.other_keywords:
-                            raise Exception("Keywords cannot be variable names")
+                            raise ERROR("error", "variable ka name keyword nahi ho sakta")
                         # maintaining list of declaared variables
                         self.vars += expression_list[i+1]
                         # checking variable type

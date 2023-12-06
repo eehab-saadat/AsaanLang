@@ -186,17 +186,17 @@ class Parser:
                         i+=1 # increment to variable name
                         # must be followed by a variable name
                         if i >= len(tokens) or not isinstance(tokens[i], str) or self.getVariable(tokens[i]) == None:
-                            raise ERROR("Parser error: ", f"\"hai\" se pehle variable nahi mila : {self.current_line}")
+                            raise ERROR("error", "\"hai\" se pehle variable nahi mila")
                     ##variable = (tokens[i], tokens[i-1]) # varaible(name, type)
                     variable = self.getVariable(tokens[i])
                     if variable is None:
-                        raise ERROR("Parser error: ", f"Sirf variable ko value di ja sakti he: {self.current_line}")
+                        raise ERROR("error", "Sirf variable ko value di ja sakti he")
                     i+=1 # increment to assignment operator
                     if i >= len(tokens) or not isinstance(tokens[i], OPERATOR) or not tokens[i].isAssignment():
-                        raise ERROR("Parser error: ", f"\"hai\" operator mojud nahi : {self.current_line}")
+                        raise ERROR("error", "\"hai\" operator mojud nahi")
                     i+=1 # increment to btao? or expression
                     if i >= len(tokens):
-                        raise ERROR("Parser error: ", f"\"hai\" ke baad koi koi value honi chahiye thi : {self.current_line}") # raise error expected a value
+                        raise ERROR("error", "\"hai\" ke baad koi koi value honi chahiye thi") # raise error expected a value
                     if isinstance(tokens[i], KEYWORD) and tokens[i].name == "btao?" :
                         # append an input statement to the AST
                         if i+1 >= len(tokens) : # to make sure nothing follows the btao? keyword
@@ -212,7 +212,7 @@ class Parser:
                             AST.append(INPUT_STATEMENT(variable.name, variable_type))
                             break
                         else :
-                            raise ERROR("Parser error: ", f"\"btao?\" ka ghalat istemaal : {self.current_line}") # raise error: invalid input syntax (smth folloes the input statement in source code)
+                            raise ERROR("error", "\"btao?\" ka ghalat istemaal") # raise error: invalid input syntax (smth folloes the input statement in source code)
                     # is an expression
                     # evaluate expression for int | float | string
                     elif variable.type.lower() != "boolean" and self.isAllowedAssignment(variable.type, tokens[i:], variable.allowed_operators):
@@ -227,7 +227,7 @@ class Parser:
                         AST.append(ASSIGNMENT_STATEMENT(variable.name, exp))
                         break
                     else:
-                        raise ERROR("Parser error: ", f" \"hai\" ka ghalat istemaal : {self.current_line}") # raise error invalid assignment
+                        raise ERROR("error", " \"hai\" ka ghalat istemaal") # raise error invalid assignment
   
                 # 1--- code for conditional
                 # 2 --- errors
@@ -252,11 +252,11 @@ class Parser:
                             elif isinstance(tokens[i], str):
                                 statement_to_print = f"\"{tokens[i]}\""
                             else:
-                                raise ERROR("Parser error: ", f"di gai value ko console per nahi likha ja sakta : {self.current_line}") # raise error: token cannot be printed
+                                raise ERROR("error", "di gai value ko console per nahi likha ja sakta") # raise error: token cannot be printed
                             AST.append(PRINT_STATEMENT(statement_to_print))
                             break
                         else :
-                            raise ERROR("Parser error: ", f"\"likho\" ka ghalat istemaal : {self.current_line}") # raise error: invalif print statement
+                            raise ERROR("error", "\"likho\" ka ghalat istemaal") # raise error: invalif print statement
 
                     # for while / if / elif statement or else -> check is followed by conditional
                     elif tokens[i].isConditional() or tokens[i].isWarna() :
@@ -269,10 +269,10 @@ class Parser:
                             i+=1
                             # if is a valid condition
                             if i != len(tokens) - 1:
-                                raise ERROR("Parser error: ", f"ghalat shartiya jumla : {self.current_line}") # raise error: invalid conditional expression
+                                raise ERROR("error", "ghalat shartiya jumla") # raise error: invalid conditional expression
                             if not isinstance(tokens[i], CONDITIONAL_EXP) or not self.isAllowedConditional(tokens[i].condition):
                                 print(self.isAllowedConditional(tokens[i].condition))
-                                raise ERROR("Parser error: ", f"ghalat shartiya jumla : {self.current_line}") # raise error: invalid conditional expression
+                                raise ERROR("error", "ghalat shartiya jumla") # raise error: invalid conditional expression
                             condition : str = self.convertTOCondition(tokens[i].condition) # get the condition
                        
                         #append the statement to AST
@@ -287,10 +287,10 @@ class Parser:
                         break 
 
                     else :
-                        raise ERROR("Parser error: ", f"kisi keyword ka ghalat istemaal : {self.current_line}") # raise error: invalid keyword usage
+                        raise ERROR("error", "kisi keyword ka ghalat istemaal") # raise error: invalid keyword usage
 
                 else:
-                    raise ERROR("Parser error: ", f"ghalat harf (keyword) ka istemaal : {self.current_line}") # raise error: unidentified or invalid token
+                    raise ERROR("error", "namaloom harf ka istemaal") # raise error: unidentified or invalid token
         
             
         # check that all while, if, elif , else statements are followed by a code block (list) in the ast
@@ -299,7 +299,7 @@ class Parser:
         #     if isinstance(AST[i], list) :
         #         # must be preceeded by a while or if or elif statement
         #         if i-1 < 0 or not isinstance(AST[i-1], WHILE_STATEMENT) or not isinstance(AST[i-1], IF_STATEMENT) or not isinstance(AST[i-1], ELIF_STATEMENT):
-        #             raise ERROR("Parser error: ", "agey {....} ka istemaal ana chahiye tha") # raise error: code block expected at 
+        #             raise ERROR("error", "agey {....} ka istemaal ana chahiye tha") # raise error: code block expected at 
 
         return AST
     
