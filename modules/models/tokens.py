@@ -79,7 +79,7 @@ class OPERATOR:
         return self.operator in self.logical_op.keys()
 
 class BOOL_KW:
-    bool_val = {"sahi": "true", "galat": "false"}
+    bool_val = {"sahi": "True", "galat": "False"}
     equiv_repr = ""
 
     def __init__(self, value: str) -> None:

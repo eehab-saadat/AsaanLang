@@ -202,11 +202,11 @@ class Parser:
                         if i+1 >= len(tokens) : # to make sure nothing follows the btao? keyword
                             variable_type=""
                             if variable.type.lower() == "number":
-                                variable_type.lower() == "int"
+                                variable_type = "int"
                             elif variable.type.lower() == "lafz":
-                                variable_type.lower() == "str"
+                                variable_type = "str"
                             elif variable.type.lower() == "ishariya":
-                                variable_type.lower() == "float"
+                                variable_type = "float"
                             else:
                                 variable_type = "bool"
                             AST.append(INPUT_STATEMENT(variable.name, variable_type))
