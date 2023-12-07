@@ -1,3 +1,6 @@
+# imports
+from modules.models.errors import ERROR
+
 # For Lexical Code Analysis
 class Lexer:
     source_code = "" # source code
@@ -52,7 +55,7 @@ class Lexer:
                 self.move() # move to the next character
             elif (self.char == ")" or self.char == "}"): # for closing conditionals or code blocks
                 if len(self.bracket_stack) == 0: # if the stack is empty
-                    pass # raise syntax error for unbalanced brackets
+                    raise ERROR("error", "bracket ka ghalat istemaal") # raise syntax error for unbalanced brackets
                 else:
                     if (self.char == ")"): # end of conditional, round closing bracket
                         self.bracket_stack.pop() # pop the opening bracket from the stack
@@ -63,9 +66,9 @@ class Lexer:
                         self.bracket_stack.pop() # pop the opening bracket from the stack
                         return expr_list # return the list of statements
                     else: # if the bracket is not a closing bracket
-                        pass # raise error
+                        raise ERROR("error", "bracket band krna bhool gaye") # raise error
             else:
-                pass # raise syntax error
+                raise ERROR("error", "bracket ka ghalat istemaal") # raise syntax error
                 
         if (len(statement) > 0): # if the statement is not empty
             expr_list.append(statement) # append the statement to the list of statements
@@ -90,7 +93,7 @@ class Lexer:
             number += self.char # append the character to the number
             self.move() # move to the next character
         if self.char != " ": # if the character is not a space
-            pass # raise syntax error 
+            raise ERROR("error", "number ki jagha harf ka istemaal") # raise syntax error 
         return number # return the number
     
     def getString(self) -> str: # fetches a string
@@ -104,7 +107,7 @@ class Lexer:
             else: # if the character is not a quote
                 string += self.char # append the character to the string
         if not quotesClosed: # if the quotes are not closed
-            pass # raise syntax error
+            raise ERROR("error", "vaveyn ya \"\" ka istemaal nahi kiya") # raise syntax error
         return string # return the string
     
     def getComment(self) -> str: # fetches a comment
