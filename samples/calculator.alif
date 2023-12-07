@@ -1,0 +1,29 @@
+number option hai 0
+number nateeja hai 0
+number pehla_num hai 0
+number dosra_num hai 0
+# menu
+likho "1) jama krne kelie 1 dabaein  \n"
+likho "2) manfi krne kelie 2 dabaein\n"
+likho "3) zarb krne kelie 3 dabaein\n"
+likho "4) taqseem krne kelie 4 dabaein\n"
+likho "9) band krne kelie 9 dabaein\n"
+# eek asaan calculator ki app:
+jabtak (9 keBrabarNahi option) {
+    option = batao?
+    agar (1 keBrabar option) {
+        nateeja hai pehla_num + dosra_num
+    }
+    warnaagar (2 keBrabar option) {
+        nateeja hai pehla_num - dosra_num
+    }
+    warnaagar (3 keBrabar option) {
+        nateeja hai pehla_num * dosra_num
+    }
+    warnaagar (4 keBrabar option) {
+        nateeja hai pehla_num / dosra_num
+    }
+    warnaagar (5 ke keBrabar option) {
+        likho "Asaan calculator istemaal krne ka shukriya!\n"
+    }
+} 
